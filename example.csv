@@ -1,0 +1,4 @@
+# Project,Taxon
+2010 Ames Lines,12E     # Selects '12E' from '2010 Ames Lines'
+All,B73                 # Selects all matching taxa with name 'B73'
+Old Maize Diversity,All # Selects all taxa from project 'Old Maize Diversity'

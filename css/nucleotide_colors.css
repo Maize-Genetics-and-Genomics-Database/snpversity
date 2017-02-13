@@ -1,0 +1,68 @@
+/* 
+    Created on : Dec 29, 2015, 10:36:02 AM
+    Author     : root
+*/          
+td.noMatch{
+    font-weight: bold;  
+    background-color: #ffb6c1;
+}
+td.N{
+    background-color: lightgray;
+}
+td.j{
+    background-color: #9DCA9D;
+}
+td.n{
+    background-color: orange;
+}
+td.A{
+   background-color: red;
+}
+td.C{
+    background-color: orange;
+}
+td.G{
+    background-color: darkorange;
+}
+td.T{
+   background-color: purple;
+}
+td.R{
+    background-color: blue;
+}
+td.Y{
+   background-color: mediumorchid;
+}
+td.S{
+   background-color: pink;
+}
+td.W{
+   background-color: plum;
+}
+td.M{
+  background-color: limegreen;
+}
+td.zero{
+   background-color: turquoise;
+}
+td.K{
+  background-color: coral;
+}
+td.ins{
+    background-color:darkred;
+}
+td.del{
+    background-color: #28948c;
+}
+td.D{
+    background-color: #c0a16b;
+}
+td.H{
+    background-color:#cb5aa8;
+}
+td.V{
+    background-color: #f84545;
+}
+td.B{
+   background-color: yellow;
+}

@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<div style="width: 500px">
+    <!--<style>.taxon{background-color: limegreen;}
+        .project{background-color: lightblue;}</style>-->
+    <a href="#helpModal">Back</a>
+    <a href="#" title="Close" class="close">X</a>
+    <h2><strong>Custom upload of files</strong></h2>
+    <h4>Save selections for reuse</h4>
+    <p>After running a query, you can save a file containing a list of all stocks you have used. To download the file:</p>
+    <p>
+        1. Click on the "sheet"-icon in the center of the footer. The file should download automatically.<br>
+        2. Should your web-browser not download the file, save the file by pressing right click --> "Save".<br>
+        3. Resupply the file for your next query under "Custom Upload".
+    </p>
+    <h4>Creating a CSV file</h4>
+    <p>To create the CSV-file, open a text-editor or spreadsheet software. Then write two comma-separated values per line, in the form <span class="project">project</span>,<span class="taxon">stock</span>.For example:</p>
+    <table>
+        <thead>
+            <tr>
+                <td>
+                    Project
+                </td>
+                <td>
+                    <span class="taxon">Stock</span>
+                </td>
+                <td>
+                    Explanation
+                </td>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>
+                    <span class="project">NAM</span>
+                </td><td><span class="taxon">B73xB97</span>  
+                </td>
+                <td>
+                    Select B73xB97 from NAM
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <span class="project">Ames282</span></td>
+                <td>
+                    <span class="taxon">B73</span>
+                </td>
+                <td>
+                    Select B73 from Ames282
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <span class="project">R&amp;D</span></td>
+                <td>
+                    <span class="taxon">All</span>
+                </td>
+                <td>
+                    Selects all taxa in project R&amp;D
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <span class="project">All</span></td>
+                <td><span class="taxon">05-397</span>
+                </td>
+                <td>
+                    Selects any matches with name 05-397
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <p>You can select all stocks from the project by writing "All" in the <span class="taxon">stock column</span>. If you only know the stock name but not the project it belongs to, you can write 'All" in the <span class="project">project column</span> to select all projects.</p>
+    <h4>Creating a custom stock file</h4>
+    <p>You can create a custom file by copying the stocks directly from the provided source files. On the query selection page:
+        <br>1. Click on "View Sources"
+        <br>2. Select the data set you would like to run your query against.
+        <br>3. Click on the file you would like to open. This should open up a separate tab.
+        <br>4. Simply copy & paste desired stocks into your custom file</p>
+    <p>
+        <strong>Important: For security reasons the submission will only accept a file of type '.stockinfo', 'txt', or '.csv'.</strong></p>
+</div>

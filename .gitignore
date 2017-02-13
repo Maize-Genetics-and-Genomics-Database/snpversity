@@ -1,0 +1,18 @@
+# Files used during development
+/nbproject/private/
+.DS_Store
+exec.txt
+/additional/
+# Generated Output/Input
+/tassel/output/
+/tassel/input/
+/tassel/
+# Files used during development
+*.gff3
+.idea/
+*.json
+# Serialized Time Prediction model
+*.pickle
+# Other folder
+/backup/
+*~

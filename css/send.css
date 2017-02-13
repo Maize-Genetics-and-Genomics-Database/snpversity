@@ -1,0 +1,186 @@
+html,body {
+    margin:0;
+    padding:0;
+    height:100%;
+}
+#wrapper {
+    min-height:100%;
+    position:relative;
+}
+
+#content {
+    min-height:100%;
+    position:relative;
+    padding-bottom:65px; /* Height of the footer element */
+}
+#footer {
+    background:#61A961;
+    width:100%;
+    height: 65px;
+    position:fixed;
+    bottom:0;
+}
+#rightFooter{
+    float:right;width: 20%; height: 100%; vertical-align: top; color: white;
+}
+#leftFooter{
+    float:left;width: 10%; height: 100%; vertical-align: top; color: white;
+    margin-left: 10px;
+}
+#descriptionFooter{
+    float:left; width: 0%; height: 100%; vertical-align: top; color: white;
+    margin-left: 10px;
+}
+#centerFooter{
+    width: 50%; margin-left: 25%; margin-right: 25%;
+}
+#centerFooter > a{
+    display:inline; vertical-align: middle; line-height: 40px;
+}
+#centerFooter > a{
+    display:inline; vertical-align: middle; line-height: 40px;
+}
+/* Table stuff */
+table {
+    margin: 0 auto;
+    border: 1px solid black;
+    border-spacing: 0.5rem;
+    border-left: none;
+    border-top: none;
+    border-collapse: collapse;
+    text-align: center;
+    height: 100%;
+}
+th,td{
+    padding: 3px;
+    border:1px solid black;
+    border-spacing: 0.5rem;
+    border-bottom: 0;
+    border-collapse: collapse;
+}
+th {
+    background-color: #61A961;
+    color: white;
+}
+#tableOfResults th.shortHead{
+    vertical-align:bottom;
+    background-color: white;
+    border: none;
+    padding:0px;
+    margin-left: 1px;
+}
+th.rotate {
+    height: 100px;
+    width: 16px;
+    white-space: nowrap;
+    overflow: visible;
+    font-size: 90%;
+    margin:0;
+    padding:0;
+    border-bottom: 0;
+}
+th.rotate > div {
+    transform: rotate(270deg) translate(-4.5em,0);
+    transform-origin: 0 0;
+    -moz-transform: rotate(270deg) translate(-4.5em,0);
+    -moz-transform-origin: 0 0;
+    -webkit-transform: rotate(270deg) translate(-4.5em,0);
+    -webkit-transform-origin: 0 0;
+    width: 16px;
+}
+th.rotate > div > span {
+    padding: 5px 10px;
+}
+.applyHeaderFormat{
+    height:20px;
+    border:0.5px solid black;
+    background-color:#61A961;
+    color: white;
+    border-bottom: none;
+    border-right: none;
+}
+#geneModelHeader{
+    min-width:100px;
+}
+
+/* Sticky Table Header*/
+.sticky-wrap {
+    overflow-x: auto;
+    position: relative;
+    width: 100%;
+    margin: 0 auto;
+    border: 1px solid black;
+    border-spacing: 0.5rem;
+    border-left: none;
+    border-top: none;
+    border-collapse: collapse;
+    text-align: center;
+    height: 100%;
+}
+.sticky-wrap .sticky-thead,
+.sticky-wrap .sticky-col,
+.sticky-wrap .sticky-intersect {
+    opacity: 0;
+    position: absolute;
+    top: 0;
+    left: 0;
+    transition: all .125s ease-in-out;
+    z-index: 50;
+    width: auto; /* Prevent table from stretching to full size */
+}
+.sticky-wrap .sticky-thead {
+    box-shadow: 0 0.25em 0.1em -0.1em rgba(0,0,0,.125);
+    z-index: 100;
+    width: 100%; /* Force stretch */
+}
+.sticky-wrap .sticky-intersect {
+    opacity: 1;
+    z-index: 150;
+}
+.sticky-wrap .sticky-intersect th {
+    background-color: #666;
+    color: #eee;
+}
+.sticky-wrap td,
+.sticky-wrap th {
+    box-sizing: border-box;
+}
+
+/*hover:*/
+#tableOfResults tr:last-child td { border-bottom: 1px solid black; }
+#tableOfResults tr:hover td { border-top-color: red; border-bottom: 1px solid red; }
+#tableOfResults tr:hover td:first-child { border-left-color: red; }
+#tableOfResults tr:hover td:last-child  { border-right-color: red; }
+
+#taxaTable{
+    background-color: #E0D8E0;
+    position: fixed;
+    top: 100px;;
+    right: 0;
+    cursor:move;
+}
+#taxaTable:hover{border:2px solid #041600;}
+#nucleotideTable{
+    background-color: #E0D8E0;
+    position: fixed;
+    top: 100px;
+    left: 0;
+    cursor:move;
+}
+#nucleotideTable:hover{border:2px solid #041600;}
+#loadpage{
+    position:absolute; 
+    left:0px; top:0px; 
+    background-color:white; 
+    height:100%; 
+    width:100%;
+    display:block;
+    margin:0 auto;
+}
+.modalDialog > div thead th{
+    color:black;
+    background-color: initial;
+}
+.modalDialog > div a {
+    float:right;
+}

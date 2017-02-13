@@ -1,0 +1,51 @@
+html{
+    height:100%;
+}
+table, th, td{
+    border: 1.5px solid black;
+    border-spacing: 0.5rem;
+    border-collapse: collapse;
+}
+th, td {
+    padding: 5px;
+}
+a{
+    display:inline;
+    float:right;
+}
+th > div{
+    display:inline; float:none;
+}
+.btn-group{
+    display: inline;
+}
+#taxa{
+    width:350px;
+}
+td > div{
+    display:inline;
+}
+#errorMsg{
+    color:red;
+}
+#loading{
+    display:none;
+}
+#tr-model-select{
+    display:none;
+}
+.verify-box{
+    display: inline-flex;
+}
+.ui-autocomplete-loading {
+    background: white url("../img/ajax-loader-light.gif") right center no-repeat;
+}
+.notify-box{
+    border: 1px solid #fff;
+    background-color: #fff;
+    border-radius: 3px;
+    padding: 10px;
+    min-height: 20px;
+    max-width: 300px;
+    float:right;
+}
