@@ -25,7 +25,7 @@ Description here
 
 #### Java Version 1.8.0_77
 * The Tassel files (version 5.2.17) are included in the repository for your convenience. All other required libraries need to be added.
-* For a list of these libraries and where to put them, consult [manifest.txt](/tassel/tassel-wrapper/manifest.txt)
+* For a list of these libraries and where to put them, consult [manifest.txt](/tassel/tassel-wrapper/manifest.txt) for the time being, or [contact David Schott](www.maizegdb.org/contact).
 
 #### PHP Version 5.3.3
 * No additional libraries required.
@@ -33,4 +33,6 @@ Description here
 #### Python Version 2.7.6
 * See [requirements.txt](requirements.txt).
 
-#### Database (PostgreSQL)
+#### Database (PostgreSQL) Version 8.4.20
+* Please [contact David Schott](www.maizegdb.org/contact) if you want the pg_dumpall flat file containing all the tables.
+* Database connections are established using the [db_controller.php](db_controller.php). Change the connection details according to your setup.
