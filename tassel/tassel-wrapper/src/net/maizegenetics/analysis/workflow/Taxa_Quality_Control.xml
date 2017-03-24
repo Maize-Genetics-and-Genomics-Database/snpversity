@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<TasselPipeline>
+    <citation>
+        Romay, M, Wang Y., Casstevens T. (2015) First Annual Tassel Hackathon.
+    </citation>
+    <workflow>
+        Quality Control.
+    </workflow>
+    <fork1>
+        <importGuess>
+            filename
+            <workflow> 
+                Load Genotype File. (example: mdp_genotype.hmp.txt)
+            </workflow>
+        </importGuess>
+        <FilterTaxaNames>
+            <workflow> 
+                Filter Taxa Names. (example: select lines which contains "NC" and capture the selection)
+            </workflow>
+        </FilterTaxaNames>
+        <filterAlign>
+            <filterAlignMinFreq>0.0005</filterAlignMinFreq>
+            <workflow>
+                Filter out mono-morphic sites. (example: Minimum Count: 1, Minimum Frequency: 0.0005, Maximum Frequency: 1.0)
+            </workflow>
+        </filterAlign>
+        <FilterTaxaPropertiesPlugin>
+            <minNotMissing>0.1</minNotMissing>
+            <minHeterozygous>0.0</minHeterozygous>
+            <maxHeterozygous>0.05</maxHeterozygous>
+            <workflow>
+                Filter to remove Taxa with low coverage. (example: Min Proportion of Sites Present: 0.1, Min Heterozygous Proportion: 0.0, Max Heterozygous Proportion: 0.05)
+            </workflow>
+        </FilterTaxaPropertiesPlugin>
+    </fork1>
+    <runfork1/>
+    <fork2>
+        <genotypeSummary>
+            taxa
+            <workflow>
+                Generate taxa summary. (exmaple: only select taxa)
+            </workflow>
+        </genotypeSummary>
+        <input1/>
+    </fork2>
+    <fork4>
+        <tree>
+            Neighbor
+            <workflow>
+                Generate phylogenetic tree and distance matrix.
+            </workflow>
+        </tree>
+        <input1/>
+    </fork4>
+    <fork5>
+        <MultiDimensionalScalingPlugin/>
+        <input4/>
+    </fork5>
+    <fork6>
+        <archaeopteryx>
+            <workflow>
+                View phylogenetic tree.
+            </workflow>
+        </archaeopteryx>
+        <input4/>
+    </fork6>
+</TasselPipeline>

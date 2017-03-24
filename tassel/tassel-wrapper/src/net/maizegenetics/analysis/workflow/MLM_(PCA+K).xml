@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<TasselPipeline>
+    <citation>
+        Casstevens T, Wang Y. (2015) First Annual Tassel Hackathon.
+    </citation>
+    <workflow>
+        Association analysis using GLM.
+    </workflow>
+    <fork1>
+        <importGuess>
+            filename
+            <workflow> 
+                Load Genotype File. (example: mdp_genotype.hmp.txt)
+            </workflow>
+        </importGuess>
+        <filterAlign>
+            <filterAlignMinFreq>0.05</filterAlignMinFreq>
+            <workflow>
+                Filter out mono-morphic sites. (example: Minimum Count: 150, Minimum Frequency: 0.05, Maximum Frequency: 1.0)
+            </workflow>
+        </filterAlign>
+    </fork1>
+    <runfork1/>
+    <fork2>
+        <pca>
+            <workflow>
+                Using PCA method to calculate the populations structure. (example: number of components: 3)
+            </workflow>
+        </pca>
+        <input1/>
+    </fork2>
+    <fork3>
+        <ck>
+            <workflow>
+                Calculate the kinship data.
+            </workflow>
+        </ck>
+        <input1/>
+    </fork3>
+    <fork4>
+        <importGuess>
+            filename
+            <workflow> 
+                Load Phenotypes File. (example: mdp_traits.txt)
+            </workflow>
+        </importGuess>
+    </fork4>
+    <runfork4/>
+    <combine5>
+        <input1/>
+        <input2/>
+        <input4/>
+        <intersect/> 
+    </combine5>
+    <combine6>
+        <input5/>
+        <input3/>
+        <mlm>
+            <workflow>
+                Association analysis using MLM.
+            </workflow>
+        </mlm>
+        <mhd>
+            <workflow>
+                Manhattan Plot
+                (example: select dpoll to draw the Manhattan plot)
+            </workflow>
+        </mhd>
+    </combine6>
+</TasselPipeline>

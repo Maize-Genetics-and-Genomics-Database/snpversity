@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<TasselPipeline>
+    <citation>
+        Casstevens T, Wang Y. (2015) First Annual Tassel Hackathon.
+    </citation>
+    <workflow>
+        Association analysis using MLM.
+    </workflow>
+    <fork1>
+        <importGuess>
+            filename
+            <workflow>
+                Load Genotype File. (example: mdp_genotype.hmp.txt)
+            </workflow>
+        </importGuess>
+        <filterAlign>
+            <filterAlignMinFreq>0.05</filterAlignMinFreq>
+            <workflow>
+                Filter out mono-morphic sites. (example: Minimum Count: 150, Minimum Frequency: 0.05, Maximum Frequency: 1.0)
+            </workflow>
+        </filterAlign>
+    </fork1>
+    <runfork1/>
+    <fork2>
+        <importGuess>
+            filename
+            <workflow>
+                Load Population Structure File. (example: mdp_population_structure.txt)
+            </workflow>
+        </importGuess>
+        <excludeLastTrait>
+            <workflow>
+                Covariate selection. (example: There are three populations represented as Q1, Q2, and Q3. They sum to 100%. This creates linear dependency if we use all of them as covariates. While GLM can handle that properly, it will cause MLM to complain and refuse to complete your analysis. We can eliminate the dependency by removing one of the Q variables. Uncheck the last population (Q3))
+            </workflow>
+        </excludeLastTrait>
+    </fork2>
+    <runfork2/>
+    <fork3>
+        <importGuess>
+            filename
+            <workflow> 
+                Load Phenotypes File. (example: mdp_traits.txt)
+            </workflow>
+        </importGuess>
+    </fork3>
+    <runfork3/>
+    <combine4>
+        <input1/>
+        <input2/>
+        <input3/>
+        <intersect/> 
+    </combine4>
+    <fork5>
+        <importGuess>
+            filename
+            <workflow> 
+                Load Kinship data. (example: mdp_kinship.txt)
+            </workflow>
+        </importGuess>
+    </fork5>
+    <runfork5/>
+    <combine6>
+        <input4/>
+        <input5/>
+        <mlm>
+            <workflow>
+                Association analysis using MLM.
+            </workflow>
+        </mlm>
+        <mhd>
+            <workflow>
+                Manhattan Plot
+                (example: select dpoll to draw the Manhattan plot)
+            </workflow>
+        </mhd>
+    </combine6>
+</TasselPipeline>
