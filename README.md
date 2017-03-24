@@ -17,17 +17,14 @@ Description here
 
 ## Environment Requirements ##
 
-#### Java Version
+#### Java Version 1.8.0_77
 * Dependency 1
 * Dependency 2
 
-#### PHP Version
-* Dependency 1
-* Dependency 2
+#### PHP Version 5.3.3
+* No additional libraries required.
 
-#### Python Version
-* Dependency 1
-* Dependency 2
-* requirements.txt
+#### Python Version 2.7.6
+* See [requirements.txt](requirements.txt).
 
 #### Database (PostgreSQL)
