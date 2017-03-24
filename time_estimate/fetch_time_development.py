@@ -179,7 +179,14 @@ def model_validation(dataset, model_type='regression', validation_type='mse', ve
         error = mean_absolute_error(time_true,time_pred)
     else:
         error = mean_squared_error(time_true, time_pred)
+    print ('Mean of {1}: {0}'.format(mean(time_true),dataset))
+    print ('Standard Deviation of {1}: {0}'.format(np.std(time_true),dataset))
     return error
+
+
+def mean(numbers):
+    return float(sum(numbers) / max(len(numbers),1))
+
 
 
 def main():
@@ -214,4 +221,7 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    lst = [2,4,5]
+    print("mean: {0}".format(mean(lst)))
+    print("Standard deviation: {0}".format(np.std(lst)))
+    #main()
