@@ -24,8 +24,8 @@ Description here
 ## Environment Requirements ##
 
 #### Java Version 1.8.0_77
-* Dependency 1
-* Dependency 2
+* The Tassel files (version 5.2.17) are included in the repository for your convenience. All other required libraries need to be added.
+* For a list of these libraries and where to put them, consult [manifest.txt](/tassel/tassel-wrapper/manifest.txt)
 
 #### PHP Version 5.3.3
 * No additional libraries required.
