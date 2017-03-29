@@ -5,6 +5,8 @@ Can be accessed [here](http://www.maizegdb.org/snpversity).
 
 ## Structure ##
 
+![alt tag](./img/snpversity.png)
+
 #### [/time_estimate](/time_estimate)
 This folder contains the [python script](/time_estimate/fetch_time.py) used to predict query execution time. It accepts dataset, # stocks, range of positions (in bp) as an input, and returns the estimated time in seconds. For example, in order to get estimated query processing time for AllZeaGBSv2.7 dataset with 100 stocks across 18121 bp's:
 
