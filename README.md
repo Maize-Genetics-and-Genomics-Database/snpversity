@@ -33,7 +33,7 @@ The [Tassel](http://www.maizegenetics.net/tassel) part of the project used for p
 
 
 ## HDF5 Datasets
- * Currently, 4 diversity data sets are supported by SNPversity. These should be dropped in the [tassel/](./tassel) directory according to the **"File name in SNPversity"** column. The files are:
+ * Currently, 4 diversity data sets are supported by SNPversity. These should be dropped in the [tassel](./tassel) directory according to the **"File name in SNPversity"** column. The files are:
 
 | Dataset Name| Assembly| # Stocks (Taxa)| # SNP's | File size (GB)| File name in SNPversity|
 |-------------|---------|----------------|---------|---------------|------------------------|
@@ -67,6 +67,6 @@ The [Tassel](http://www.maizegenetics.net/tassel) part of the project used for p
 ## Installation / Setting up ##
 1. Install & configure all technologies mentioned in Environment Requirements.
 2. Drop HDF5 files in [tassel](./tassel) directory.
-3. After setting up PostgreSQL, import the tables from the [pg_dumpall flat file](./SNPversity_DB_Dump).
+3. After setting up PostgreSQL, import the tables from the database dump flat file that you chose.
 4. Change [db_controller.php](db_controller.php) to satisfy your DB configuration.
 5. Modify absolute paths used in code to match your environment.
