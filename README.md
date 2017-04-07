@@ -61,6 +61,7 @@ The [Tassel](http://www.maizegenetics.net/tassel) part of the project used for p
 * Database connections are established using the [db_controller.php](db_controller.php). Change the connection details according to your setup.
 
 #### Apache Web Server Version 2.2.15
+* No additional customization needed (confirm).
 
 ## Installation / Setting up ##
 * Install & configure all technologies mentioned in Environment Requirements.
