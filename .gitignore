@@ -11,6 +11,8 @@ exec.txt
 *.gff3
 .idea/
 *.json
+# sql files
+*.sql
 # Serialized Time Prediction model
 *.pickle
 # Other folder
