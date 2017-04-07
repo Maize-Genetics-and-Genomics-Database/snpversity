@@ -48,7 +48,7 @@ The [Tassel](http://www.maizegenetics.net/tassel) part of the project used for p
 
 #### Java Version 1.8.0_77
 * The Tassel files (version 5.2.17) are included in the repository for your convenience. All other required libraries need to be added.
-* For a list of these libraries and where to put them, consult [manifest.txt](/tassel/tassel-wrapper/manifest.txt) for the time being, or [contact David Schott from MaizeGDB](https://www.maizegdb.org/contact).
+* For a list of these libraries and where to put them, consult [manifest.txt](/tassel/tassel-wrapper/manifest.txt) for the time being.
 
 #### PHP Version 5.3.3
 * No additional libraries required.
@@ -57,15 +57,16 @@ The [Tassel](http://www.maizegenetics.net/tassel) part of the project used for p
 * See [requirements.txt](requirements.txt).
 
 #### Database (PostgreSQL) Version 8.4.20
-* The [pg_dumpall flat file](./BACKUP_09192016_FINAL.sql) containing all the tables.
+* The pg_dumpall flat file containing all the tables can be retrieved from [MaizeGDB's FTP server](http://ftp.maizegdb.org/MaizeGDB/FTP).
+* Alternatively, see the [schema-only flat file](./SNPversity_public.sql).
 * Database connections are established using the [db_controller.php](db_controller.php). Change the connection details according to your setup.
 
 #### Apache Web Server Version 2.2.15
 * No additional customization needed (confirm).
 
 ## Installation / Setting up ##
-* Install & configure all technologies mentioned in Environment Requirements.
-* Drop HDF5 files in [tassel](./tassel) directory.
-* After setting up PostgreSQL, import the tables from the [pg_dumpall flat file](./BACKUP_09192016_FINAL.sql).
-* Change [db_controller.php](db_controller.php) to satisfy your DB configuration.
-* Modify absolute paths used in code to match your environment.
+1. Install & configure all technologies mentioned in Environment Requirements.
+2. Drop HDF5 files in [tassel](./tassel) directory.
+3. After setting up PostgreSQL, import the tables from the [pg_dumpall flat file](./SNPversity_DB_Dump).
+4. Change [db_controller.php](db_controller.php) to satisfy your DB configuration.
+5. Modify absolute paths used in code to match your environment.

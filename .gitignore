@@ -12,7 +12,7 @@ exec.txt
 .idea/
 *.json
 # sql files
-*.sql
+SNPversity_DB_Dump.sql
 # Serialized Time Prediction model
 *.pickle
 # Other folder
