@@ -12,7 +12,7 @@ Can be accessed [here](http://www.maizegdb.org/snpversity).
 | Stocks Extractor | [TaxaExtractor.php](./TaxaExtractor.php)|
 | Stocks File | [Input Example](./tassel/input/Q8d5213d29ef4d615629cdb54ea1076fb.taxainfo)|
 | TASSEL Wrapper | [Tassel_gt_server.java](./tassel/tassel-wrapper/src/tassel_gt_server/Tassel_gt_server.java)|
-| JSON SNP Data | [Output Example](./tassel/output/O8d5213d29ef4d615629cdb54ea1076fb.json)|
+| JSON SNP Data | [Output Example](./tassel/output/1_O8d5213d29ef4d615629cdb54ea1076fb.json)|
 | Diversity Data | This should be added to the [Tassel](./tassel) directory. |
 | Homepage | [home.php](./home.php) |
 | Visualization of Results | [send.php](./send.php)|
