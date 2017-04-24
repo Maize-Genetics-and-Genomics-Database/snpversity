@@ -64,8 +64,8 @@ $db_handle->runQuery($query_log_to_DB);
 $time_pre_query = microtime(true);
 $file_count  = exec($query_tassel);
 $time_post_query = microtime(true);
-error_log("\n{TIME} " . $uId. " Tassel time: " . ($time_post_query - $time_pre_query) . " (s)\n");
-addDataPoint($data_set,count($taxaArray),$startPosition,$endPosition,($time_post_query - $time_pre_query));
+//error_log("\n{TIME} " . $uId. " Tassel time: " . ($time_post_query - $time_pre_query) . " (s)\n"); for debugging
+addDataPoint($data_set,count($taxaArray),$startPosition,$endPosition,($time_post_query - $time_pre_query),$uId);
 
 //Split large file:
 //$first_file = "http://david1.usda.iastate.edu/Diversity/tassel/output/1_O".$uId.$outputExtension;

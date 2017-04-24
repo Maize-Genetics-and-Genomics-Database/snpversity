@@ -57,8 +57,8 @@ The [Tassel](http://www.maizegenetics.net/tassel) part of the project used for p
 * See [requirements.txt](requirements.txt).
 
 #### Database (PostgreSQL) Version 8.4.20
-* The pg_dumpall flat file containing all the tables can be retrieved from [MaizeGDB's FTP server](http://ftp.maizegdb.org/MaizeGDB/FTP).
-* Alternatively, see the [schema-only flat file](./SNPversity_public.sql).
+* The pg_dumpall flat file containing all the tables can be retrieved from [MaizeGDB's FTP server](http://ftp.maizegdb.org/MaizeGDB/FTP/SNPversity/).
+* Alternatively, see the [schema-only flat file](http://ftp.maizegdb.org/MaizeGDB/FTP/SNPversity/).
 * Database connections are established using the [db_controller.php](db_controller.php). Change the connection details according to your setup.
 
 #### Apache Web Server Version 2.2.15

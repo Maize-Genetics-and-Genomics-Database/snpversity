@@ -21,10 +21,10 @@ n_neighbors = 3
 KNN_WEIGHTS = 'uniform'
 PLOT_STOCKS_POINTS = 100.0
 PLOT_RANGES_POINTS = 10.0
-MODEL_TYPE = 'regression'  # 'regression' OR 'ada' OR 'knn'
+MODEL_TYPE = 'ada'  # 'regression' OR 'ada' OR 'knn'
 ADA_N_ESTIMATORS = 200
-VALIDATION_TYPE = 'mse'
-
+VALIDATION_TYPE = 'mae'
+DEV_IDENTIFIER = '_development'
 
 def parseCSV(name):
     xs = []
@@ -45,7 +45,7 @@ def parseCSV(name):
 
 
 def plot(dataset, model_type='knn', point_selection='random'):
-    taxa,ranges,times = parseCSV(dataset+".csv")
+    taxa,ranges,times = parseCSV(dataset+DEV_IDENTIFIER+".csv")
     fig = plt.figure()
     ax = fig.add_subplot(111,projection='3d')
     ax.set_xlabel('# Stocks')
@@ -77,7 +77,7 @@ def plot(dataset, model_type='knn', point_selection='random'):
 
 def construct(dataset,stocks=[],ranges=[],times=[]):
     if not stocks or not ranges or not times:
-        stocks,ranges,times = parseCSV(dataset+".csv")
+        stocks,ranges,times = parseCSV(dataset+DEV_IDENTIFIER+".csv")
     df = pd.DataFrame({"t":times, "s":stocks, "r":ranges})
     return sm.ols("t ~ s + r", data=df).fit() # Time ~ Stocks, Range
 
@@ -95,7 +95,7 @@ def predict(model, s, r, model_type='regression'):
 
 def scikit_construct(dataset, mode='knn', X=np.array([]), y=np.array([])):
     if not X.any() or not y.any():
-        taxa,ranges,times = parseCSV(dataset+".csv")
+        taxa,ranges,times = parseCSV(dataset+DEV_IDENTIFIER+".csv")
         X = np.asarray(zip(taxa,ranges))
         y = np.asarray(times)
     if mode == 'knn':
@@ -144,7 +144,7 @@ def load_train(dataset,stocks,ranges,times, mode_type='regression'):
     return model
 
 
-def model_validation(dataset, model_type='regression', validation_type='mse', verbose=False):
+def model_validation(dataset, model_type='regression', validation_type='mse', verbose=True):
     """
     Calculates mean error of model's leave-one-out
     :param dataset: File path of CSV file containing data points.
@@ -155,8 +155,10 @@ def model_validation(dataset, model_type='regression', validation_type='mse', ve
     """
     loo = LeaveOneOut()
     taxa,ranges,times = parseCSV(dataset+".csv")
+    # For experimentation between test/train taxa_dev,ranges_dev,times_dev = parseCSV(dataset+DEV_IDENTIFIER+".csv")
     if verbose:
         print "Evaluation of {0} using {1} and {2} real datapoints".format(dataset,model_type,str(len(taxa)))
+        print "# Stocks, Range (bp), Actual time, Predicted time"
     X = np.asarray(zip(taxa,ranges))
     y = np.asarray(times)
     time_true = []
@@ -173,8 +175,7 @@ def model_validation(dataset, model_type='regression', validation_type='mse', ve
         pred = predict(model,s_test,r_test,model_type)
         time_pred.append(pred)
         if verbose:
-            print 'Predict:{0},{1},{2}'.format(s_test,r_test,pred)
-            print 'Actual: {0},{1},{2}'.format(s_test,r_test,times[test])
+            print '{0},{1},{2},{3}'.format(s_test,r_test,times[test],pred)
     if validation_type == 'mae':
         error = mean_absolute_error(time_true,time_pred)
     else:
@@ -207,8 +208,8 @@ def main():
             for d in ['AllZeaGBSv27public20140528','ZeaGBSv27publicImputed20150114','ZeaHM321_LinkImpute','ZeaHM321_raw']:
                 mse = model_validation(d,MODEL_TYPE,VALIDATION_TYPE)
                 print '{2} of {0}: {1}'.format(d,mse,VALIDATION_TYPE)
-                plot(d, 'regression','uniform')
-                plot(d, 'knn','uniform')
+                plot(d, MODEL_TYPE,'uniform')
+                #plot(d, 'knn','uniform')
                 #plot(d, 'ada')
         else:
             mse = model_validation(dataset,MODEL_TYPE,VALIDATION_TYPE,True)
@@ -221,7 +222,4 @@ def main():
 
 
 if __name__ == "__main__":
-    lst = [2,4,5]
-    print("mean: {0}".format(mean(lst)))
-    print("Standard deviation: {0}".format(np.std(lst)))
-    #main()
+    main()

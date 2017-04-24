@@ -8,11 +8,11 @@
 
 $time_estimate_dir = "time_estimate/";
 
-function addDataPoint($dataset,$stocks_count,$start,$end,$time){
+function addDataPoint($dataset,$stocks_count,$start,$end,$time,$uId=''){
     global $time_estimate_dir;
     $range = $end - $start;
     $handle = fopen($time_estimate_dir . $dataset . ".csv", "a");
-    $line = array($stocks_count,$range,$time);
+    $line = array($stocks_count,$range,$time,$uId);
     fputcsv($handle,$line);
     fclose($handle);
 }

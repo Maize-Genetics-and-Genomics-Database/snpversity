@@ -40,6 +40,7 @@ $(document).ready(function () {
             var filename = $("#query-id").html() + ".csv";
             exportTableToCSV.apply(this, [$('#tableOfResults'), filename]);
         });
+        
 });
 
 function rePopulate() {
@@ -217,4 +218,49 @@ function exportTableToCSV($table, filename) {
             'href': csvData,
             'target': '_blank'
         });
+}
+
+function moveScroll() {
+    var scroll_top = $(window).scrollTop();
+    var scroll_left = $(window).scrollLeft();
+    var anchor_top = $("#tableOfResults").offset().top;
+    var anchor_left = $("#tableOfResults").offset().left;
+    var anchor_bottom = $("#bottom_anchor").offset().top;
+    
+    $("#clone").find("thead").css({
+        width: $("#tableOfResults thead").width()+"px",
+        position: 'absolute',
+        left: - scroll_left  + 'px'
+    });
+    
+    $("#tableOfResults").find(".first").css({
+        position: 'absolute',
+        left: scroll_left + anchor_left + 'px'
+    });
+    
+    if (scroll_top >= anchor_top && scroll_top <= anchor_bottom) {
+        clone_table = $("#clone");
+        if (clone_table.length == 0) {
+            clone_table = $("#tableOfResults")
+                .clone()
+                .attr('id', 'clone')
+                .css({
+                    width: $("#tableOfResults").width()+"px",
+                    position: 'fixed',
+                    pointerEvents: 'none',
+                    left: $("#tableOfResults").offset().left+'px',
+                    top: 0
+                })
+                .appendTo($("#table_container"))
+                .css({
+                    visibility: 'hidden'
+                })
+                .find("thead").css({
+                    visibility: 'visible'
+                });
+        }
+    }
+    else {
+        $("#clone").remove();
+    }
 }
