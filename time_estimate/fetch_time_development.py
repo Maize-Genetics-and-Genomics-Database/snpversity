@@ -144,7 +144,7 @@ def load_train(dataset,stocks,ranges,times, mode_type='regression'):
     return model
 
 
-def model_validation(dataset, model_type='regression', validation_type='mse', verbose=False):
+def model_validation(dataset, model_type='regression', validation_type='mse', verbose=True):
     """
     Calculates mean error of model's leave-one-out
     :param dataset: File path of CSV file containing data points.
