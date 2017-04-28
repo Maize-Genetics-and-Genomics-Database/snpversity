@@ -21,7 +21,7 @@ n_neighbors = 3
 KNN_WEIGHTS = 'uniform'
 PLOT_STOCKS_POINTS = 100.0
 PLOT_RANGES_POINTS = 10.0
-MODEL_TYPE = 'ada'  # 'regression' OR 'ada' OR 'knn'
+MODEL_TYPE = 'regression'  # 'regression' OR 'ada' OR 'knn'
 ADA_N_ESTIMATORS = 200
 VALIDATION_TYPE = 'mae'
 DEV_IDENTIFIER = '_development'
@@ -144,7 +144,7 @@ def load_train(dataset,stocks,ranges,times, mode_type='regression'):
     return model
 
 
-def model_validation(dataset, model_type='regression', validation_type='mse', verbose=True):
+def model_validation(dataset, model_type='regression', validation_type='mse', verbose=False):
     """
     Calculates mean error of model's leave-one-out
     :param dataset: File path of CSV file containing data points.
@@ -156,8 +156,8 @@ def model_validation(dataset, model_type='regression', validation_type='mse', ve
     loo = LeaveOneOut()
     taxa,ranges,times = parseCSV(dataset+".csv")
     # For experimentation between test/train taxa_dev,ranges_dev,times_dev = parseCSV(dataset+DEV_IDENTIFIER+".csv")
+    print "Evaluation of {0} using {1} and {2} real datapoints".format(dataset,model_type,str(len(taxa)))
     if verbose:
-        print "Evaluation of {0} using {1} and {2} real datapoints".format(dataset,model_type,str(len(taxa)))
         print "# Stocks, Range (bp), Actual time, Predicted time"
     X = np.asarray(zip(taxa,ranges))
     y = np.asarray(times)
