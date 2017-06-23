@@ -175,7 +175,7 @@ echo '<input name="query" value="' . $id . '" style="display: none;" type="hidde
     </tr>
     <tr>
         <td colspan="2"><input type="submit" value="Submit Query"/>
-            <button type="button" onclick="estimate();" value="Estimate">Estimate</button>
+            <button type="button" onclick="estimate();" value="Estimate">Estimate Query Time</button>
             <div class="alert alert-warning" role="alert" name='errorMsg' id='errorMsg'></div>
         </td>
     </tr>
@@ -195,6 +195,8 @@ echo '<input name="query" value="' . $id . '" style="display: none;" type="hidde
 <div id="geneModelsModal" class="modalDialog">
 </div>
 <div id="datasetsModal" class="modalDialog">
+</div>
+<div id="aboutModal" class="modalDialog">
 </div>
 <div id="loading">
     <h3>This may take a few minutes...</h3>

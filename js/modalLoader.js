@@ -6,6 +6,7 @@ $(function () {
     $("#allzeagbsModal").load("html/allzeagbs_modal.html");
     $("#geneModelsModal").load("html/gene_models_modal.html");
     $("#datasetsModal").load("html/datasets_modal.html");
+    $("#aboutModal").load("html/about_modal.html");
 });
 
 //deprecated
