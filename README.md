@@ -62,7 +62,7 @@ The [Tassel](http://www.maizegenetics.net/tassel) part of the project used for p
 * Database connections are established using the [db_controller.php](db_controller.php). Change the connection details according to your setup.
 
 #### Apache Web Server Version 2.2.15
-* No additional customization needed (confirm).
+* No additional customization needed.
 
 ## Installation / Setting up ##
 1. Install & configure all technologies mentioned in Environment Requirements.
@@ -70,3 +70,7 @@ The [Tassel](http://www.maizegenetics.net/tassel) part of the project used for p
 3. After setting up PostgreSQL, import the tables from the database dump flat file that you chose.
 4. Change [db_controller.php](db_controller.php) to satisfy your DB configuration.
 5. Modify absolute paths used in code to match your environment.
+
+
+## Adding new dataset(s) ##
+1. Download HDF5 file into [tassel](./tassel) directory.
