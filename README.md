@@ -89,7 +89,7 @@ There are 4 main steps for adding a new dataset:
     
     ![alt tag](./img/get_taxa_list.png)
     
-    3. Click on "Export"
+    3. Click on "Data" --> "Export"
     
 ### Creating a PostgreSQL Table for the stocks of the dataset ###
 1. Create a PostgreSQL Table to store the list of stocks. These are going to populate a list later in the [home.php](./home.php). For an example, see the `hapmapv3` table in the [schema-only flat file](http://ftp.maizegdb.org/MaizeGDB/FTP/SNPversity/).
