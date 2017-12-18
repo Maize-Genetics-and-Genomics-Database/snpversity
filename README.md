@@ -79,7 +79,6 @@ There are 4 main steps for adding a new dataset:
 2. Creating a PostgreSQL Table for the stocks of the dataset.
 3. Creating a PostgreSQL Table containining the gene models and their associated positions.
 4. Updating the code.
-5. Collecting time estimation data
 
 ### Downloading the dataset ###
 1. Download a HDF5 file into [tassel](./tassel) directory. See [Panzea Datasets](https://www.panzea.org/genotypes)
