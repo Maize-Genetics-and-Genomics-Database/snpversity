@@ -111,4 +111,4 @@ There are 4 main steps for adding a new dataset:
 | [fetch_time.py](./time_estimate/fetch_time.py) | Add support for new models once enough data has been collected by [service.php](./service.php) |
 
 ## Optimization ##
-In an effort to reduce query processing times, optimizations may be achieved by modifying the `writeToJSON()` function in [Tassel_gt_server.java](./tassel/tassel-wrapper/src/tassel_gt_server/Tassel_gt_server.java)
+In order to reduce query processing times, modify the `writeToJSON()` function in [Tassel_gt_server.java](./tassel/tassel-wrapper/src/tassel_gt_server/Tassel_gt_server.java)
