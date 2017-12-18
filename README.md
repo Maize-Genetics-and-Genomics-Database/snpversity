@@ -72,5 +72,35 @@ The [Tassel](http://www.maizegenetics.net/tassel) part of the project used for p
 5. Modify absolute paths used in code to match your environment.
 
 
+
 ## Adding new dataset(s) ##
-1. Download HDF5 file into [tassel](./tassel) directory.
+There are 3 core steps that need to be considered when adding a new dataset:
+1. Downloading the dataset.
+2. Creating a PostgreSQL Table for the stocks of the dataset.
+3. Creating a PostgreSQL Table containining the gene models and their associated positions.
+4. Updating the code.
+
+### Downloading the dataset ###
+1. Download a HDF5 file into [tassel](./tassel) directory. See [Panzea Datasets](https://www.panzea.org/genotypes)
+2. Use the TASSEL software to extract a list of stocks/taxa into a "TaxaList" JSON file. To do this:
+    1. Load the HDF5 file into TASSEL
+    2. Click on "Data" --> "Get Taxa List"
+    ![alt tag](./img/get_taxa_list.png)
+    3. Click on "Export"
+    
+### Creating a PostgreSQL Table for the stocks of the dataset. ###
+1. Create a PostgreSQL Table to store the list of stocks. These are going to populate a list later in the [home.php](./home.php). For an example, see the `hapmapv3` table in the [schema-only flat file](http://ftp.maizegdb.org/MaizeGDB/FTP/SNPversity/).
+2. Create a script to parse the "TaxaList" JSON file and populate the table. One such example script is located in the `/root/Desktop/HapMapV3Taxa` directory of the VM.
+
+### Creating a PostgreSQL Table containining the gene models and their associated positions.
+1. Create a PostgreSQL Table for the gene model positions. This is later going to be used by [home.php](./home.php) and [send.php](./send.php). For an example see the `b73v3ranges` table in the [schema-only flat file](http://ftp.maizegdb.org/MaizeGDB/FTP/SNPversity/).
+2. Create a script that populates the list of gene model positions. See [V3AnnotatorRanges.py](./annotation/V3AnnotatorRanges.py) and [V3IntronCorrector.py](./annotation/V3IntronCorrector.py) for an example. **This is by far the most time-consuming and error-prone step.**
+
+### Updating the code ###
+| File             | Affected Functions |
+|------------------|:---------------------:|
+| [home.php](./home.php) | HTML |
+| [home.js](./js/home.js) | onChromosomeChange(),onDataSetChange(),onAssemblyChange() |
+
+## Optimization ##
+In an effort to reduce query processing times, optimizations may be achieved by modifying the `writeToJSON()` function in [Tassel_gt_server.java](./tassel/tassel-wrapper/src/tassel_gt_server/Tassel_gt_server.java)
