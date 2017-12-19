@@ -75,6 +75,7 @@ The [Tassel](http://www.maizegenetics.net/tassel) part of the project used for p
 
 ## Adding new dataset(s) ##
 If you wish to add your dataset to SNPversity, please contact us [here](https://maizegdb.org/contact).
+
 There are 4 main steps for adding a new dataset:
 1. Downloading the dataset.
 2. Creating a PostgreSQL Table for the stocks of the dataset.
