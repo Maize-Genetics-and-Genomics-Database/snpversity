@@ -101,7 +101,8 @@ There are 4 main steps for adding a new dataset:
 1. Create a table schema in PostgreSQL that closely matches your reference genome GFF file. For example:
     
     ```
-    # CREATE TABLE gene_modelsv4(
+    # CREATE TABLE 
+    gene_modelsv4(
     chr varchar(16) NOT NULL,
     version varchar(32) NOT NULL,
     model varchar(16) NOT NULL,
@@ -127,7 +128,7 @@ There are 4 main steps for adding a new dataset:
     # DELETE from gene_modelsv4 WHERE chr !~ '^\d+$';
     ```
 
-5. Create a PostgreSQL Table for the gene model positions. This is later going to be used by [home.php](./home.php) and [send.php](./send.php). For an example: 
+5. Create a PostgreSQL Table for the gene model positions of a genome. This is later going to be used by [home.php](./home.php) and [send.php](./send.php). For an example:
     ```
             Table "public.b73v3ranges"
     Column |          Type          | Modifiers 
@@ -139,7 +140,13 @@ There are 4 main steps for adding a new dataset:
     ends   | integer                | not null
     ```
      * (this is the `b73v3ranges` table in the [schema-only flat file](http://ftp.maizegdb.org/MaizeGDB/FTP/SNPversity/)).
-6. Create a script that populates the gene model positions table. This script needs to be able to inspect the table we created using the GFF file (or simply parse the GFF file) and ensure that each position (specified in base pairs) within the genome falls under the category of `exon`, `five_prime_UTR`, `three_prime_UTR`, `intron`, or `IGR`. See [V3AnnotatorRanges.py](./annotation/V3AnnotatorRanges.py) and [V3IntronCorrector.py](./annotation/V3IntronCorrector.py) for an example. **This is by far the most time-consuming and error-prone step.**
+6. Create a script that populates the gene model positions table. This script needs to be able to inspect the table we created using the GFF file (or simply parse the GFF file) and ensure that each position (specified in base pairs) within the genome is mapped to one of:
+    * `exon`
+    * `five_prime_UTR`
+    * `three_prime_UTR`
+    * `intron`
+    * `IGR`
+ See [V3AnnotatorRanges.py](./annotation/V3AnnotatorRanges.py) and [V3IntronCorrector.py](./annotation/V3IntronCorrector.py) for an example. **This is by far the most time-consuming and error-prone step.**
 
 
 
