@@ -19,14 +19,14 @@ Can be accessed [here](http://www.maizegdb.org/snpversity).
 | Query scheduler | [service.php](service.php)|
 
 
-#### [/time_estimate](/time_estimate)
+#### [time_estimate/](/time_estimate)
 This folder contains the [python script](/time_estimate/fetch_time.py) used to predict query execution time. It accepts dataset, # stocks, range of positions (in bp) as an input, and returns the estimated time in seconds. For example, in order to get estimated query processing time for AllZeaGBSv2.7 dataset with 100 stocks across 18121 bp's:
 
 ```
 $ python2.7 fetch_time.py AllZeaGBSv27public20140528 100 128121
 ```
 
-#### [/tassel](/tassel)
+#### [tassel/](/tassel)
 The [Tassel](http://www.maizegenetics.net/tassel) part of the project used for processing queries lives here. The Tassel wrapper source code is contained in file [Tassel_gt_server.java](/tassel/tassel-wrapper/src/tassel_gt_server/Tassel_gt_server.java). In production, the only necessary file to include is:
 
 * [tassel-gt-server-david-SPLIT.jar](tassel/tassel-gt-server-david-SPLIT.jar) is the exported JAR file which gets called by the server-side PHP scripts.
@@ -62,7 +62,7 @@ The [Tassel](http://www.maizegenetics.net/tassel) part of the project used for p
 * Database connections are established using the [db_controller.php](db_controller.php). Change the connection details according to your setup.
 
 #### Apache Web Server Version 2.2.15
-* No additional customization needed (confirm).
+* No additional customization needed.
 
 ## Installation / Setting up ##
 1. Install & configure all technologies mentioned in Environment Requirements.
@@ -70,3 +70,98 @@ The [Tassel](http://www.maizegenetics.net/tassel) part of the project used for p
 3. After setting up PostgreSQL, import the tables from the database dump flat file that you chose.
 4. Change [db_controller.php](db_controller.php) to satisfy your DB configuration.
 5. Modify absolute paths used in code to match your environment.
+
+
+
+## Adding new dataset(s) ##
+If you'd like us to review a dataset for possible integration with SNPversity, please send us an e-mail [here](mailto:john.portwood@ars.usda.gov).
+
+There are 4 main steps for adding a new dataset:
+1. Downloading the dataset.
+2. Creating a PostgreSQL Table for the stocks of the dataset.
+3. Creating a PostgreSQL Table containining the gene models and their associated positions.
+4. Updating the code.
+
+### Downloading the dataset ###
+1. Download a HDF5 file into [tassel](./tassel) directory. See [Panzea Datasets](https://www.panzea.org/genotypes)
+2. Use the TASSEL software to extract a list of stocks/taxa into a "TaxaList" JSON file. To do this:
+    1. Load the HDF5 file into TASSEL
+    2. Click on "Data" --> "Get Taxa List"
+    
+    ![alt tag](./img/get_taxa_list.png)
+    
+    3. Click on "Data" --> "Export"
+    
+### Creating a PostgreSQL Table for the stocks of the dataset ###
+1. Create a PostgreSQL Table to store the list of stocks. These are going to populate a list later in the [home.php](./home.php). For an example, see the `hapmapv3` table in the [schema-only flat file](http://ftp.maizegdb.org/MaizeGDB/FTP/SNPversity/).
+2. Create a script to parse the "TaxaList" JSON file and populate the table. One such example script is located in the `/root/Desktop/HapMapV3Taxa` directory of the VM.
+3. Create a PHP script that waits for requests to fetch data from the table. For an example, see [get_taxa_hapmapv3.php](./get_taxa_hapmapv3.php)
+
+### Creating a PostgreSQL Table containining the gene models and their associated positions ###
+1. Create a table schema in PostgreSQL that closely matches your reference genome GFF file. For example:
+    
+    ```
+    # CREATE TABLE 
+    gene_modelsv4(
+    chr varchar(16) NOT NULL,
+    version varchar(32) NOT NULL,
+    model varchar(16) NOT NULL,
+    starts INT NOT NULL,
+    ends INT NOT NULL,
+    insordel1 varchar(1),
+    insordel2 varchar(1),
+    insordel3 varchar(1),
+    description varchar(512) NOT NULL);
+    ```
+        
+2. Remove the first 3 lines (starting with ##) from the GFF file, in order to prepare it for parsing.    
+3. Load the GFF file into the newly created table from step 1. For example:
+    
+    ```
+    # COPY gene_modelsv4(chr,version,model,starts,ends,insordel1,insordel2,insordel3,description) 
+    FROM '/home/user/Gene_Models_v4.gff3' DELIMITER E'\t' CSV HEADER;
+    ```
+    
+4. Clean the table and keep only rows belonging to a given chromosome. This can be achieved using the following command:
+
+    ```
+    # DELETE from gene_modelsv4 WHERE chr !~ '^\d+$';
+    ```
+
+5. Create a PostgreSQL Table for the gene model positions of a genome. This is later going to be used by [home.php](./home.php) and [send.php](./send.php). For an example:
+    ```
+            Table "public.b73v3ranges"
+    Column |          Type          | Modifiers 
+    --------+------------------------+-----------
+    type   | character varying(20)  | not null
+    model  | character varying(200) | 
+    chr    | integer                | not null
+    pos    | integer                | not null
+    ends   | integer                | not null
+    ```
+     * (this is the `b73v3ranges` table in the [schema-only flat file](http://ftp.maizegdb.org/MaizeGDB/FTP/SNPversity/)).
+6. Create a script that populates the gene model positions table. This script needs to be able to inspect the table we created using the GFF file (or simply parse the GFF file) and ensure that each position (specified in base pairs) within the genome is mapped to one of:
+    * `exon`
+    * `five_prime_UTR`
+    * `three_prime_UTR`
+    * `intron`
+    * `IGR`
+ 
+ See [V3AnnotatorRanges.py](./annotation/V3AnnotatorRanges.py) and [V3IntronCorrector.py](./annotation/V3IntronCorrector.py) for an example. **This is by far the most time-consuming and error-prone step.**
+
+
+
+
+### Updating the code ###
+| File             | Affected Code Regions |
+|------------------|:---------------------:|
+| [home.php](./home.php) | HTML for new dataset |
+| [home.js](./js/home.js) | onChromosomeChange(),onDataSetChange(),onAssemblyChange()  |
+| [get_gene_models.php](./get_gene_models.php) | All functions |
+| [send.php](./send.php) | Updating branch logic for new assembly |
+| [TaxaExtractor.php](./TaxaExtractor.php) | extract() |
+| [get_table_body.php](./get_table_body.php) | generateGbrowseURL($row_result, $gbrowser_version) |
+| [fetch_time.py](./time_estimate/fetch_time.py) | Add support for new models once enough data has been collected by [service.php](./service.php) |
+
+## Optimization ##
+In order to reduce query processing times, modify the `writeToJSON()` function in [Tassel_gt_server.java](./tassel/tassel-wrapper/src/tassel_gt_server/Tassel_gt_server.java)

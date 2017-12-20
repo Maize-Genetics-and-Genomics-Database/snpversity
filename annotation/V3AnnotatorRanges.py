@@ -1,6 +1,8 @@
 #!/usr/bin/python
 import psycopg2, re, sys
-#To be used with Tassel-generated "Positions" json file based of HapMapV3. Most of the complex logic comes from getting the 'chrom' and 'pos' as quickly as possible.
+# Takes in a chromosome index to look through the b73v3models table and generate corresponding b73v3ranges annotations. 
+# Be sure to run for each chromosome and correct afterwards with V3IntronCorrector.
+
 
 
 def annotate(cursor,current_chrom, current_pos, end):
@@ -279,11 +281,11 @@ cur = conn.cursor()
 try:
     max_chr = sys.argv[1]
 except IndexError:
-    max_chr = 8
+    sys.exit()
 cur.execute("SELECT max(pos) FROM b73v3ranges WHERE chr="+str(max_chr))
 max_pos = cur.fetchall()
 cur.execute("SELECT max(ends) FROM gene_modelsv3 WHERE chr='Chr{0}'".format(str(max_chr)))
 end = cur.fetchall()
-max_pos = [[16167234]]
-end=[[16221585]]
+#max_pos = [[16167234]]
+#end=[[16221585]]
 annotate(cur,max_chr,max_pos[0][0], end[0][0])
