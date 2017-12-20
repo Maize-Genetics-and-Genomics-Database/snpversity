@@ -21,7 +21,7 @@ n_neighbors = 3
 KNN_WEIGHTS = 'uniform'
 PLOT_STOCKS_POINTS = 100.0
 PLOT_RANGES_POINTS = 10.0
-MODEL_TYPE = 'knn'  # 'regression' OR 'ada' OR 'knn'
+MODEL_TYPE = 'regression'  # 'regression' OR 'ada' OR 'knn'
 ADA_N_ESTIMATORS = 200
 VALIDATION_TYPE = 'mae'
 DEV_IDENTIFIER = '_development'
@@ -202,6 +202,7 @@ def main():
         model = load(dataset, MODEL_TYPE)
         t = predict(model,s,r, MODEL_TYPE)
         print t
+    # dataset || "all"
     elif len(sys.argv) == 2:
         dataset = sys.argv[1]
         if dataset == 'all':
