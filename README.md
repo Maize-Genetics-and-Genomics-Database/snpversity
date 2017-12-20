@@ -161,7 +161,7 @@ There are 4 main steps for adding a new dataset:
 | [send.php](./send.php) | Updating branch logic for new assembly |
 | [TaxaExtractor.php](./TaxaExtractor.php) | extract() |
 | [get_table_body.php](./get_table_body.php) | generateGbrowseURL($row_result, $gbrowser_version) |
-| [fetch_time.py](./time_estimate/fetch_time.py) | Add support for new models once enough data has been collected by [service.php](./service.php) |
+| [fetch_time.py](./time_estimate/fetch_time.py) | Add support for new models once enough data has been collected by [service.php](./service.php) and [query_timer.php](./query_timer.php) |
 
 ## Optimization ##
 In order to reduce query processing times, modify the `writeToJSON()` function in [Tassel_gt_server.java](./tassel/tassel-wrapper/src/tassel_gt_server/Tassel_gt_server.java)
