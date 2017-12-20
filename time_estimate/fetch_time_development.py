@@ -21,7 +21,7 @@ n_neighbors = 3
 KNN_WEIGHTS = 'uniform'
 PLOT_STOCKS_POINTS = 100.0
 PLOT_RANGES_POINTS = 10.0
-MODEL_TYPE = 'regression'  # 'regression' OR 'ada' OR 'knn'
+MODEL_TYPE = 'knn'  # 'regression' OR 'ada' OR 'knn'
 ADA_N_ESTIMATORS = 200
 VALIDATION_TYPE = 'mae'
 DEV_IDENTIFIER = '_development'
@@ -144,7 +144,7 @@ def load_train(dataset,stocks,ranges,times, mode_type='regression'):
     return model
 
 
-def model_validation(dataset, model_type='regression', validation_type='mse', verbose=True):
+def model_validation(dataset, model_type='regression', validation_type='mse', verbose=False):
     """
     Calculates mean error of model's leave-one-out
     :param dataset: File path of CSV file containing data points.
