@@ -1,6 +1,6 @@
 #!/usr/bin/python
 import psycopg2, re,json,sys
-"""To be used with Tassel-generated "Positions" json file based of HapMapV3"""
+"""To be used with Tassel-generated "Positions" json file based of HapMapV3. DEPRECATED AND REPLACED WITH V3AnnotatorRanges"""
 
 
 def parsejson(file,cursor):
