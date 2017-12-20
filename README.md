@@ -98,8 +98,51 @@ There are 4 main steps for adding a new dataset:
 3. Create a PHP script that waits for requests to fetch data from the table. For an example, see [get_taxa_hapmapv3.php](./get_taxa_hapmapv3.php)
 
 ### Creating a PostgreSQL Table containining the gene models and their associated positions ###
-1. Create a PostgreSQL Table for the gene model positions. This is later going to be used by [home.php](./home.php) and [send.php](./send.php). For an example see the `b73v3ranges` table in the [schema-only flat file](http://ftp.maizegdb.org/MaizeGDB/FTP/SNPversity/).
-2. Create a script that populates the table of gene model positions. See [V3AnnotatorRanges.py](./annotation/V3AnnotatorRanges.py) and [V3IntronCorrector.py](./annotation/V3IntronCorrector.py) for an example. **This is by far the most time-consuming and error-prone step.**
+1. Create a table schema in PostgreSQL that closely matches your reference genome GFF file. For example:
+    
+    ```
+    # CREATE TABLE gene_modelsv4(
+    chr varchar(16) NOT NULL,
+    version varchar(32) NOT NULL,
+    model varchar(16) NOT NULL,
+    starts INT NOT NULL,
+    ends INT NOT NULL,
+    insordel1 varchar(1),
+    insordel2 varchar(1),
+    insordel3 varchar(1),
+    description varchar(512) NOT NULL);
+    ```
+        
+2. Remove the first 3 lines (starting with ##) from the GFF file, in order to prepare it for parsing.    
+3. Load the GFF file into the newly created table from step 1. For example:
+    
+    ```
+    # COPY gene_modelsv4(chr,version,model,starts,ends,insordel1,insordel2,insordel3,description) 
+    FROM '/home/user/Gene_Models_v4.gff3' DELIMITER E'\t' CSV HEADER;
+    ```
+    
+4. Clean the table and keep only rows belonging to a given chromosome. This can be achieved using the following command:
+
+    ```
+    # DELETE from gene_modelsv4 WHERE chr !~ '^\d+$';
+    ```
+
+5. Create a PostgreSQL Table for the gene model positions. This is later going to be used by [home.php](./home.php) and [send.php](./send.php). For an example: 
+    ```
+            Table "public.b73v3ranges"
+    Column |          Type          | Modifiers 
+    --------+------------------------+-----------
+    type   | character varying(20)  | not null
+    model  | character varying(200) | 
+    chr    | integer                | not null
+    pos    | integer                | not null
+    ends   | integer                | not null
+    ```
+     * (this is the `b73v3ranges` table in the [schema-only flat file](http://ftp.maizegdb.org/MaizeGDB/FTP/SNPversity/)).
+6. Create a script that populates the gene model positions table. This script needs to be able to inspect the table we created using the GFF file (or simply parse the GFF file) and ensure that each position (specified in base pairs) within the genome falls under the category of `exon`, `five_prime_UTR`, `three_prime_UTR`, `intron`, or `IGR`. See [V3AnnotatorRanges.py](./annotation/V3AnnotatorRanges.py) and [V3IntronCorrector.py](./annotation/V3IntronCorrector.py) for an example. **This is by far the most time-consuming and error-prone step.**
+
+
+
 
 ### Updating the code ###
 | File             | Affected Code Regions |
