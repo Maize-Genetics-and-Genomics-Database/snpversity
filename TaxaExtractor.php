@@ -2,7 +2,7 @@
 
 require_once 'db_controller.php';
 /* Used for extracting and preprocessing all taxa to ensure appropriate input for tassel.
- * data is retrieved from send.php, processed, and array of taxa is send back.
+ * data is retrieved from send.php, processed, and array of taxa is send back using extract() function.
  */
 
 class TaxaExtractor {
@@ -156,7 +156,7 @@ class TaxaExtractor {
     }
 
     private function addToTaxaArray($results, $taxonIsHapMap) {
-        if ($this->assembly == "v2") { // !HapMap
+        if ($this->assembly == "v2" || $this->assembly == "v4") { // !HapMap
             foreach ($results as $row) {
                 $taxonToAddFiltered = $row["dna_sample"] . ':' . $row["lib_prep_id"];
                 if (!in_array($taxonToAddFiltered, $this->taxaArray) && !(empty($taxonToAddFiltered))) {
@@ -225,7 +225,7 @@ class TaxaExtractor {
     }*/
 
     public function checkIfInbred($inbred, $shortName=false){
-        if ($this->assembly == "v2"){  // Currently only have inbreds for allzeagbs
+        if ($this->assembly == "v2" || $this->assembly == "v4"){  // Currently only have inbreds for allzeagbs
             $query_get_accs = "SELECT DISTINCT ON (dna_sample,project) * FROM allzeagbsv27 WHERE inbred='".$inbred."';";
             $accessions = $this->db_handle->runQuery($query_get_accs);
             if ($accessions[0]["dna_sample"] != ''){

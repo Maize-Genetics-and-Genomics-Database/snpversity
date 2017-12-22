@@ -29,7 +29,7 @@ function validateForm(blockScreen) {
     else if (valUndefined(file.val()) && valUndefined($("#taxa option:selected").eq(0).val())) {
         return failValidation(' Please select a taxon or a file.');
     }
-    else if (dataSet == "HapMapV3" && isCsvFile(file.val())) {
+    else if (dataSet == "HapMapV3" && isCsvFile(file.val())) {  // .CSV doesn't make sense for HapMapV3 because there are no projects!
         return failValidation(".CSV files are not supported for HapMapV3. Please submit a .stockinfo file instead.");
     }
     else if ((parseInt(startPos, 10) > parseInt(endPos, 10))) {
@@ -94,6 +94,7 @@ function onDataSetChange() {
 function estimate() {
     var validated = validateForm(false);
     if (validated) {
+        var assembly = $("#assembly").val();
         var n = $('.notify-box').noty({
             text: 'Estimating Time...'
         });
@@ -124,7 +125,7 @@ function estimate() {
                 n.setText(msg);
             }
         });
-    }
+        }
 }
 
 function onOutputFormatChange() {
@@ -470,7 +471,7 @@ function onRegionTypeChange(region_type){
 
 function populateGeneModelTags(user_input){
     var matchingTags = [];
-    if (user_input.length > 1){
+    if (user_input.length > 0){
         $.ajax({
             url: "get_gene_models.php",
             type: "POST",

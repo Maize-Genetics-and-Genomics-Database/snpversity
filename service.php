@@ -50,11 +50,11 @@ fclose($myfile);
 $query_tassel = "java -jar " . $tassel . " sliceSplitFile -bf -sf " . $sourceFile . " -st " . $sourceFormat . " -df " . $outputFile . " -dt " . $output_format . " -tf " . $taxaFile . " -ch " . $chromosome . " -split " . $results_max;
 
 if ($positions == "range") {
-    $query_tassel = $query_tassel . "  -start " . $startPosition . "  -end " . $endPosition;
+    $query_tassel_range = $query_tassel . "  -start " . $startPosition . "  -end " . $endPosition;
 }
 $query_log_to_DB = "INSERT INTO genotype_queries (token, tstamp, extension, files, format, resultspp, query, version) "
-            . "VALUES ('" . $uId . "', " . $_SERVER["REQUEST_TIME"] . ", '" . $output_extension
-            . "', 1, '" . $output_format . "', null, '" . $query_tassel . "', '".$assembly."');";
+    . "VALUES ('" . $uId . "', " . $_SERVER["REQUEST_TIME"] . ", '" . $output_extension
+    . "', 1, '" . $output_format . "', null, '" . $query_tassel_range . "', '".$assembly."');";
 $db_handle->runQuery($query_log_to_DB);
 
 //fwrite($myfile, $query);  //for debugging
@@ -62,7 +62,20 @@ $db_handle->runQuery($query_log_to_DB);
 
 // Log time
 $time_pre_query = microtime(true);
-$file_count  = exec($query_tassel);
+$file_count  = exec($query_tassel_range);
+$i=1;
+while (!is_numeric($file_count) && $i<10){
+    if ($assembly == "v4"){
+        $startPosition = (string)((int)$startPosition - 1000);
+        $endPosition = (string)((int)$endPosition + 50000);
+    }
+    else{
+        $endPosition = (string)((int)$endPosition + 1000);
+    }
+    $i++;
+    $query_tassel_range = $query_tassel . "  -start " . $startPosition . "  -end " . $endPosition;
+    $file_count  = exec($query_tassel_range);
+}
 $time_post_query = microtime(true);
 //error_log("\n{TIME} " . $uId. " Tassel time: " . ($time_post_query - $time_pre_query) . " (s)\n"); for debugging
 addDataPoint($data_set,count($taxaArray),$startPosition,$endPosition,($time_post_query - $time_pre_query),$uId);
@@ -70,11 +83,11 @@ addDataPoint($data_set,count($taxaArray),$startPosition,$endPosition,($time_post
 //Split large file:
 //$first_file = "http://david1.usda.iastate.edu/Diversity/tassel/output/1_O".$uId.$outputExtension;
 if ($output_extension == ".json") {
-  /*  $query_split_files = "cd ./tassel/output/ && ./SplitFile.py O" . $uId . $output_extension . " " . $results_max. " T"; //filepath, 200rows/page, delete original after split = true
-    $time_pre_file_split = microtime(true);
-    $file_count = exec($query_split_files);  //returns # of generated files
-    $time_post_file_split = microtime(true);
-    error_log("\n{TIME} " . $uId. " File Split time: " . ($time_post_file_split - $time_pre_file_split) . " (s)\n");*/
+    /*  $query_split_files = "cd ./tassel/output/ && ./SplitFile.py O" . $uId . $output_extension . " " . $results_max. " T"; //filepath, 200rows/page, delete original after split = true
+      $time_pre_file_split = microtime(true);
+      $file_count = exec($query_split_files);  //returns # of generated files
+      $time_post_file_split = microtime(true);
+      error_log("\n{TIME} " . $uId. " File Split time: " . ($time_post_file_split - $time_pre_file_split) . " (s)\n");*/
     $update_log_to_DB = "UPDATE genotype_queries SET resultspp=".$results_max.", files=".$file_count." WHERE token='".$uId."';";
     $db_handle->runQuery($update_log_to_DB);
     echo $uId . ',' . $file_count . ',' . $results_max; //uid,#files,#rows/page

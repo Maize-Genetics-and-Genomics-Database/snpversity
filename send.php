@@ -190,7 +190,7 @@ if (!isset($parent) || $parent !== "true") {
         <div id='rightFooter'>
             <strong>Color Labels:</strong>
             <div>
-                <?php if ($assembly == "v2"){echo '<button style="display:inline;" type="button" id="showCodeT" onclick="showTaxaCodes();">Show Stock Box</button>';}?>
+                <?php if ($assembly == "v2" || $assembly == "v4"){echo '<button style="display:inline;" type="button" id="showCodeT" onclick="showTaxaCodes();">Show Stock Box</button>';}?>
 
                 <button style="display:inline;" type="button" id="showCodeN" onclick="showNucleotideCodes();">Show Nucleotide Box</button>
             </div>

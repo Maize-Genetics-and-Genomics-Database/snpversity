@@ -53,7 +53,7 @@ function printTableRow($row_result) {
             break;
         }
         else{
-        array_shift(&$gene_models_all);  // Remove elements that are not in range
+            array_shift(&$gene_models_all);  // Remove elements that are not in range
         }
     }
     echo '<tr>
@@ -61,10 +61,10 @@ function printTableRow($row_result) {
                 <td style="background-color:white;">' . $row_result["allele"] . '</td>
                 <td style="background-color:white;">' . $row_result["chrom_name"] . '</td>
                 <td style="background-color:white;">' . $row_result["chrom_pos"] . '</td>';
-        // Deal with IGR's
-        if ($gene_models_all[0]["type"] == "IGR") {
+    // Deal with IGR's
+    if ($gene_models_all[0]["type"] == "IGR") {
         echo ' <td style="background-color:white;"><a href="' . $gene_url . '" title="View in Gbrowse" target="_blank">View</a></td>'
-        . '<td style="background-color:white;">IGR</td>';
+            . '<td style="background-color:white;">IGR</td>';
     }
     // Deal with other Gene Models
     elseif (!empty($gene_models_all[0]["model"])) {  // => not IGR
@@ -73,7 +73,12 @@ function printTableRow($row_result) {
         try {
             $html_tds = $html_tds . ' <td style="background-color:white;">';
             while ($gene_models_all[$i]["pos"] <= $row_result["chrom_pos"]) {
-                $html_tds = $html_tds . '<a href="' . $gene_url . '" title="View in Gbrowse" target="_blank">' . substr($gene_models_all[$i]["model"], 0, -4) . '</a><br>';
+                if ($assembly == "v4"){
+                    $html_tds = $html_tds . '<a href="' . $gene_url . '" title="View in Gbrowse" target="_blank">' . substr($gene_models_all[$i]["model"], 0, -5) . '</a><br>';
+                }
+                else{
+                    $html_tds = $html_tds . '<a href="' . $gene_url . '" title="View in Gbrowse" target="_blank">' . substr($gene_models_all[$i]["model"], 0, -4) . '</a><br>';
+                }
                 $i++;
                 if (isset($gene_models_end)){break;}  // Reached final result already (when close to end of chromosome).
                 if ($i > 10){
@@ -98,7 +103,7 @@ function printTableRow($row_result) {
     // Else, not found in ranges DB
     else{
         echo ' <td style="background-color:white;"><a href="' . $gene_url . '" title="View in Gbrowse" target="_blank">View</a></td>'
-        . '<td style="background-color:white;">?</td>'; 
+            . '<td style="background-color:white;">?</td>';
     }
     foreach ($row_result["results"] as $allele) {
         $pos = strpos($row_result["allele"], $allele);
@@ -116,9 +121,9 @@ function generateGbrowseURL($row_result, $gbrowser_version) {
     }
 
     $gene_url = $common_url . "/?start=" . strval((intval($row_result["chrom_pos"]) - 500))
-            . ";stop=" . strval((intval($row_result["chrom_pos"]) + 500))
-            . ";width=1000;ref=" . $chr_full . ";h_region=" .
-            $row_result["chrom_pos"] . ".." . $row_result["chrom_pos"] . "@red;";
+        . ";stop=" . strval((intval($row_result["chrom_pos"]) + 500))
+        . ";width=1000;ref=" . $chr_full . ";h_region=" .
+        $row_result["chrom_pos"] . ".." . $row_result["chrom_pos"] . "@red;";
     return $gene_url;
 }
 
@@ -196,8 +201,8 @@ function printCell($pos, $allele) {
 function getDBVal($row_result, $col_name, $table_name) {
     global $db_handle;
     $query = "SELECT " . $col_name . " FROM " . $table_name
-            . " WHERE chr=" . $row_result["chrom_name"] . " AND "
-            . "pos=" . $row_result["chrom_pos"] . ";";
+        . " WHERE chr=" . $row_result["chrom_name"] . " AND "
+        . "pos=" . $row_result["chrom_pos"] . ";";
     $gene_model = $db_handle->runQuery($query);
     return $gene_model;
 }
@@ -219,8 +224,8 @@ function getAllDBVals($row_result) {
     global $db_handle, $sites_total, $table_name;
     $max_vals = ceil($sites_total * 1.5);
     $query = "SELECT * FROM " . $table_name
-            . " WHERE chr=" . $row_result["chrom_name"] . " AND "
-            . "ends>=" . $row_result["chrom_pos"] . " ORDER BY chr,pos LIMIT " . $max_vals . ";";
+        . " WHERE chr=" . $row_result["chrom_name"] . " AND "
+        . "ends>=" . $row_result["chrom_pos"] . " ORDER BY chr,pos LIMIT " . $max_vals . ";";
     $gene_models = $db_handle->runQuery($query);
     return $gene_models;
 }

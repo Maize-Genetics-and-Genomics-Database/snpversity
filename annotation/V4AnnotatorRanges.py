@@ -1,9 +1,8 @@
 #!/usr/bin/python
 import psycopg2, re, sys
-# Takes in a chromosome index to look through the b73v3models table and generate corresponding b73v3ranges annotations. 
-# IMPORTANT: THIS SCRIPT CONTAINS A BUG CAUSING SOME GENE MODELS TO BE ANNOTATED AS IGR --> Intron --> IGR
-# Be sure to run for each chromosome and correct afterwards with V3IntronCorrector.
-# CURRENTLY DISABLED COMMITTING TO DB JUST TO BE SAFE
+# Takes in a chromosome index to look through the b73v4models table and generate corresponding b73v4ranges annotations. 
+# IMPORTANT: Be sure to run for each chromosome and correct afterwards with V4IntronCorrector.
+
 
 
 def annotate(cursor,current_chrom, current_pos, end):
@@ -26,8 +25,8 @@ def annotate(cursor,current_chrom, current_pos, end):
 
 
 def get_remaining_batch_from_chrom(cursor, current_chrom, current_pos):
-    """Gets all gene positions of T01 or P01 transcripts"""
-    query_next_pos = "SELECT * FROM gene_modelsv3 WHERE chr='Chr{0}' AND " \
+    """Gets all gene positions of T001 or P001 transcripts"""
+    query_next_pos = "SELECT * FROM gene_modelsv4 WHERE chr='Chr{0}' AND " \
                      "starts>={1} AND " \
                      "(model='mRNA'OR model='gene' OR model='miRNA_gene' OR model='miRNA')" \
                      " ORDER BY starts, ends".format(str(current_chrom),str(current_pos))
@@ -35,16 +34,16 @@ def get_remaining_batch_from_chrom(cursor, current_chrom, current_pos):
     cursor.execute(query_next_pos)
     transcripts = cursor.fetchall()
     for row in transcripts:
-        descriptors = re.split(';', row[8])  # [ID=transcript:GRGRMASD312_T01;parent=,...]
+        descriptors = re.split(';', row[8])  # [ID=transcript:GRGRMASD312_T001;parent=,...]
         temp = (descriptors[0][5:], descriptors[2][3:])  # drop name=, ID=
         # temp = (int(row[1]),int(row[2]), int(row[3])) #(10045,10051,1) = start,pos,chr
         try:
             ending = re.split('_', temp[0])[1]
-            if ending == "T01" or ending == "P01":
+            if ending == "T001" or ending == "P001":
                 ranges = (temp[0], row[3], row[4], current_chrom)  # (name,start,end,chromosome)
                 transcript_positions.append(ranges)
         except:
-            continue  # do nothing. (not T01 or P01)
+            continue  # do nothing. (not T001 or P001)
     return transcript_positions
 
 
@@ -88,7 +87,7 @@ def populatedb(chrom, pos,end, model_tuple, cursor):
     :return: updated value in DB
     """
     for (type, model) in model_tuple:
-        query_populate = "INSERT INTO b73v3ranges VALUES " \
+        query_populate = "INSERT INTO b73v4ranges VALUES " \
                      " ('" + type + "', '" + model + "', " + str(chrom) + ", " + str(pos) + ", "+str(end)+");"
         cursor.execute(query_populate)
         print(query_populate)
@@ -97,30 +96,30 @@ def populatedb(chrom, pos,end, model_tuple, cursor):
 def populatedbFromAnnotations(annotations, cursor):
     for a in annotations:
         annotation_type, gene_name, start, end, chrom = a
-        query_populate = "INSERT INTO b73v3ranges VALUES " \
+        query_populate = "INSERT INTO b73v4ranges VALUES " \
                      " ('" + annotation_type + "', '" + gene_name + "', " + str(chrom) + ", " + str(start) + ", "+str(end)+");"
-        #cursor.execute(query_populate)
+        cursor.execute(query_populate)
         print(query_populate)
 
 
 def get01transcriptranges(cursor):
     """Filters out all 01-transcript genes with corresponding range
     returns ranges[gene-ID] => (name,start,end,chromosome)"""
-    cursor.execute("""SELECT description,starts,ends,chr FROM gene_modelsv3 WHERE model='mRNA'
+    cursor.execute("""SELECT description,starts,ends,chr FROM gene_modelsv4 WHERE model='mRNA'
     OR model='gene' OR model='miRNA_gene' OR model='miRNA'""")
     rows = cursor.fetchall()
     ranges = {}
     for row in rows:
-        descriptors = re.split(';', row[0]) #[ID=transcript:GRGRMASD312_T01;parent=,...]
+        descriptors = re.split(';', row[0]) #[ID=transcript:GRGRMASD312_T001;parent=,...]
         temp = (descriptors[0][5:],descriptors[2][3:]) #drop name=, ID=
        # temp = (int(row[1]),int(row[2]), int(row[3])) #(10045,10051,1) = start,pos,chr
         try:
             ending = re.split('_',temp[0])[1]
-            if ending == "T01" or ending == "P01":
+            if ending == "T001" or ending == "P001":
                 #print "Adding to transcripts:"+temp[1]+" => ("+temp[0]+", "+str(row[1])+", "+str(row[2])+", "+row[3]+")"
                 ranges[temp[1]] = (temp[0],row[1],row[2],row[3]) #ranges[gene-ID] => (name,start,end,chromosome)
         except:
-            continue #do nothing. (not T01 or P01)
+            continue #do nothing. (not T001 or P001)
     return ranges
 
 
@@ -136,7 +135,7 @@ def get_annotations_from_gene(gene_tuple, cur):
     if not name:
         return [("IGR","",start_gene,end_gene,chrom)]
 
-    query_get_annotations = "SELECT model,description,starts,ends,chr from gene_modelsv3 WHERE chr='Chr{0}' AND " \
+    query_get_annotations = "SELECT model,description,starts,ends,chr from gene_modelsv4 WHERE chr='Chr{0}' AND " \
                             "starts>={1} AND ends<={2} AND " \
                             "(model='CDS' OR model='three_prime_UTR' OR model='five_prime_UTR')".format(str(chrom),str(start_gene),str(end_gene)) # AND (model='CDS' OR model='three_prime_UTR' OR model='five_prime_UTR'
     cur.execute(query_get_annotations)
@@ -176,7 +175,7 @@ def get_annotations_from_gene_old(gene_tuple, cur, ranges):
     if not name:
         return [("IGR","",start_gene,end_gene,chrom)]
 
-    query_get_annotations = "SELECT model,description,starts,ends,chr from gene_modelsv3 WHERE chr='Chr{0}' AND " \
+    query_get_annotations = "SELECT model,description,starts,ends,chr from gene_modelsv4 WHERE chr='Chr{0}' AND " \
                             "starts>={1} AND ends<={2} AND " \
                             "(model='CDS' OR model='three_prime_UTR' OR model='five_prime_UTR') ORDER BY starts, ends".format(str(chrom),str(start_gene),str(end_gene)) # AND (model='CDS' OR model='three_prime_UTR' OR model='five_prime_UTR'
     cur.execute(query_get_annotations)
@@ -220,7 +219,7 @@ def checkIntron(chrom, pos, ranges):
 
 def getAllAnnotationsFromChrom(chrom, cursor):
     chrom_full = "Chr" + str(chrom)
-    query_range = "SELECT model,description,starts,ends,chr FROM gene_modelsv3 " +\
+    query_range = "SELECT model,description,starts,ends,chr FROM gene_modelsv4 " +\
                 "WHERE chr='" + chrom_full+"' AND model != 'miRNA_gene' AND model != 'mRNA' AND model != 'gene' AND model != 'miRNA';"
     cursor.execute(query_range)
     return cursor.fetchall()
@@ -233,10 +232,10 @@ def checkExon(chrom, pos, cursor, annotations, ranges):
         if (row[4] == chrom and row[2] <= pos and row[3] > pos): #matches
             duplicate = False
             try:
-                name_full = re.split(';',row[1])[0] #get name=GRMZM2343_P01
-                name = name_full[5:] #name=GRMZM2343_P01
-                ending = re.split('_',name)[1] #P01
-                if (ending == "P01" or ending=="T01"):
+                name_full = re.split(';',row[1])[0] #get name=GRMZM2343_P001
+                name = name_full[5:] #name=GRMZM2343_P001
+                ending = re.split('_',name)[1] #P001
+                if (ending == "P001" or ending=="T001"):
                     duplicate = checkGeneExistence(name, gene_models)
                     if not duplicate:
                         gene_type = row[0]
@@ -244,11 +243,11 @@ def checkExon(chrom, pos, cursor, annotations, ranges):
                             gene_type = 'exon'
                         tuple = (gene_type, name)
                         gene_models.append(tuple) #type, gene-transcript
-            except:#could be T01
+            except:#could be T001
                 parent_full = re.split(';',row[1])[0] #get Parent=874531
                 parent_key = re.split('=',parent_full)[1] #87453
                 for (transcript_id, range_tuple) in ranges.iteritems():
-                    if parent_key == transcript_id: #for v3 must be exon
+                    if parent_key == transcript_id: #for v4 must be exon
                         duplicate = checkGeneExistence(range_tuple[0], gene_models)
                         if not duplicate:
                             gene_type = row[0]
@@ -283,9 +282,9 @@ try:
     max_chr = sys.argv[1]
 except IndexError:
     sys.exit()
-cur.execute("SELECT max(pos) FROM b73v3ranges WHERE chr="+str(max_chr))
+cur.execute("SELECT max(pos) FROM b73v4ranges WHERE chr="+str(max_chr))
 max_pos = cur.fetchall()
-cur.execute("SELECT max(ends) FROM gene_modelsv3 WHERE chr='Chr{0}'".format(str(max_chr)))
+cur.execute("SELECT max(ends) FROM gene_modelsv4 WHERE chr='Chr{0}'".format(str(max_chr)))
 end = cur.fetchall()
 #max_pos = [[16167234]]
 #end=[[16221585]]
