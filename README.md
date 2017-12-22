@@ -147,19 +147,21 @@ There are 4 main steps for adding a new dataset:
     * `intron`
     * `IGR`
  
- See [V3AnnotatorRanges.py](./annotation/V3AnnotatorRanges.py) and [V3IntronCorrector.py](./annotation/V3IntronCorrector.py) for an example. **This is by far the most time-consuming and error-prone step.**
+ See [V3AnnotatorRanges.py](./annotation/V3AnnotatorRanges.py) and [V3IntronCorrector.py](./annotation/V3IntronCorrector.py) for an example. **This is by far the most time-consuming and error-prone step since every assembly is unique. Expect multiple attempts**
 
 
 
 
 ### Updating the code ###
+In short, you want to review any code region that makes use of the `$assembly` and `$version` variables. Below is a short summary:
+
 | File             | Affected Code Regions |
 |------------------|:---------------------:|
 | [home.php](./home.php) | HTML for new dataset |
 | [home.js](./js/home.js) | onChromosomeChange(),onDataSetChange(),onAssemblyChange()  |
 | [get_gene_models.php](./get_gene_models.php) | All functions |
 | [send.php](./send.php) | Updating branch logic for new assembly |
-| [TaxaExtractor.php](./TaxaExtractor.php) | extract() |
+| [TaxaExtractor.php](./TaxaExtractor.php) | extract(), anything that references $assembly |
 | [get_table_body.php](./get_table_body.php) | generateGbrowseURL($row_result, $gbrowser_version) |
 | [fetch_time.py](./time_estimate/fetch_time.py) | Add support for new models once enough data has been collected by [service.php](./service.php) and [query_timer.php](./query_timer.php) |
 
